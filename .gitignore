@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Machine learning models & large datasets
+*.pt
+*.pth
+*.bin
+*.onnx
+*.safetensors
+datasets/cache/
+datasets/raw/
+
+# Secrets
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db
