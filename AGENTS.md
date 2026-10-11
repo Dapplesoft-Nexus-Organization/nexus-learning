@@ -4,7 +4,21 @@ This document serves as the master reference, binding architectural blueprint, a
 
 ---
 
-## 1. Universal AI Git & Commit Policy (STRICT - MUST FOLLOW)
+## 1. Ecosystem Context & Multi-Repository Boundary
+
+This repository is an **independent, offline intelligence and machine learning evaluation component** of the **Dapplesoft Nexus Ecosystem** (`Dapplesoft-Nexus-Organization`).
+
+### Repository Responsibility & Scope
+
+| What Belongs Here (`nexus-learning`) | What Belongs in Other Repositories |
+|---|---|
+| • Offline execution trace curation & redaction pipelines<br>• pgvector indexing scripts & knowledge embedding generators<br>• Candidate skill extractors (from completed task logs)<br>• Offline golden benchmark evaluation harnesses<br>• LoRA fine-tuning scripts and training pipelines (code only) | • **Web Console UI & Transactional API**: Belongs in `dapplesoft-nexus`<br>• **Host Device Agent**: Belongs in `nexus-device-agent`<br>• **Declarative Policies & Prompt Registry**: Belongs in `nexus-governance`<br>• **Sandboxes & Browser Automation**: Belongs in `nexus-computer-use`<br>• **Production Deployment Compose**: Belongs in `nexus-deployment` |
+
+> **CRITICAL GITHUB SIZE RULE**: Never commit raw multi-gigabyte training datasets, binary model weights, or audio/video recordings into Git. All datasets must be ignored via `.gitignore` or referenced via external S3/MinIO pointers.
+
+---
+
+## 2. Universal AI Git & Commit Policy (STRICT - MUST FOLLOW)
 
 ### A. Never Commit (`git commit` is FORBIDDEN for AI)
 - The AI assistant **MUST NEVER** execute `git commit`.
@@ -16,8 +30,7 @@ This document serves as the master reference, binding architectural blueprint, a
 - Never publish branches or code online to GitHub. All modifications must stay strictly in the local workspace.
 
 ### C. Git Branching & Naming Standards
-- **Feature Branch Prefix**: MUST use the full prefix **`feature/`** (lowercase), followed by kebab-case (e.g., `feature/pgvector-indexing`, `feature/trajectory-curator`).
-  - **STRICTLY PROHIBITED**: Never use shorthand prefixes like `feat/`. Always use `feature/`.
+- **Feature Branch Prefix**: MUST use the full prefix **`feature/`** (lowercase), followed by kebab-case (e.g., `feature/pgvector-indexing`, `feature/trajectory-curator`). Never use shorthand `feat/`.
 - **Bugfix Branch Prefix**: Use `fix/<issue-name>` or `feature/<issue-name>`.
 - **Base Branch**: Every feature or fix branch MUST branch directly off **`dev`** (never from `main`).
 - **Workflow**: Branch off `dev` -> Perform work -> Leave changes uncommitted for user review -> User manually commits -> User pushes to `origin/feature/<branch-name>` -> PR targets `dev`.
@@ -31,7 +44,7 @@ This document serves as the master reference, binding architectural blueprint, a
 
 ---
 
-## 2. Directory Structure
+## 3. Directory Structure
 
 ```text
 nexus-learning/
@@ -45,18 +58,3 @@ nexus-learning/
 ├── pyproject.toml
 └── README.md
 ```
-
----
-
-## 3. Principles Transferred from eShop & SRV
-
-1. **Database Isolation & pgvector Security (SRV Mandate)**:
-   - Connects to PostgreSQL 16 with `pgvector` strictly via loopback (`127.0.0.1:5432`) or internal Docker network. Zero public IP binding.
-2. **Mandatory Tenant Scoping (`tenant_id`)**:
-   - Learned skills and embedding spaces must be scoped by `tenant_id` to prevent cross-tenant knowledge leaks.
-3. **Zero Plaintext Secrets**:
-   - Training keys, model registry tokens, and database credentials must never be committed.
-
----
-
-*Authorized by Dapplesoft Architecture & Nexus Governance Council*
